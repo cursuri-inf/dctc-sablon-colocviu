@@ -1,0 +1,55 @@
+% Colocviu DCTC, proba practică, sarcina 3
+% Compilează cu pdfLaTeX (implicit în Overleaf). Diacriticele se scriu direct (ă, â, î, ș, ț).
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[romanian]{babel}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Colocviu DCTC: proba practică}
+\author{Dezvoltare colaborativă și tehnologii cloud}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Instrucțiuni}
+
+Adaugă, sub această secțiune, o secțiune nouă cu titlul exact numele tău de utilizator GitHub
+(de exemplu \verb|\section{nume-utilizator}|). În ea scrii formula variantei tale, într-un mediu
+\texttt{equation}, ca în tabelul din README:
+
+\begin{itemize}
+  \item S (simularea): $A = \pi r^2$;
+  \item A: $\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$;
+  \item B: $S = \sum_{i=1}^{n} (x_i - \bar{x})^2$;
+  \item C: $x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$;
+  \item D: $\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$;
+  \item E: $(a+b)^2 = a^2 + 2ab + b^2$;
+  \item F: $n! = \prod_{k=1}^{n} k$.
+\end{itemize}
+
+Apoi adaugă în tabelul de mai jos un rând cu numele tău de utilizator și valoarea $N$ afișată
+de notebook (sarcina 4). Compilează fără erori și salvează PDF-ul ca \texttt{report/colocviu.pdf}.
+
+% ---- Secțiunea ta vine aici ----
+
+\section{Tabel}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Utilizator & $N$ \\
+    \midrule
+    exemplu & 1234 \\
+    % ---- rândul tău vine aici ----
+    \bottomrule
+  \end{tabular}
+  \caption{Valoarea calculată în notebook.}
+\end{table}
+
+\end{document}
