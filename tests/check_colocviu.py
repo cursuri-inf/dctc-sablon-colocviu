@@ -158,14 +158,14 @@ def test_ramura() -> Rezultat:
     r = Rezultat("ramura", "Sarcina 1a: ramura, commit-ul, linia din README", 2)
     user, ramura = utilizator(), ramura_curenta()
     if not user:
-        r.lipsa("nu pot afla numele de utilizator (rulează din depozitul clonat de pe GitHub).")
+        r.lipsa("nu pot afla numele de utilizator (rulați din depozitul clonat de pe GitHub).")
         return r
     commituri = commituri_proprii()
     clare = [s for s in commituri if len(s.strip()) >= 10 and len(s.split()) >= 2]
     if ramura.lower() != f"colocviu/{user}":
         r.lipsa(f"ramura este „{ramura}”; se așteaptă `colocviu/{user}`.")
     elif not commituri:
-        r.lipsa("pe ramura ta nu există niciun commit al tău (verifică `git config user.name` și `user.email`, apoi push).")
+        r.lipsa("pe această ramură nu există niciun commit propriu (verificați `git config user.name` și `user.email`, apoi push).")
     elif not clare:
         r.lipsa("niciun commit cu mesaj clar (cel puțin două cuvinte și 10 caractere): " + "; ".join(f"„{s}”" for s in commituri[:3]))
     else:
@@ -175,9 +175,9 @@ def test_ramura() -> Rezultat:
     if not linie:
         r.lipsa("în secțiunea „Linia mea” din README lipsește rândul `Varianta X: utilizator, zz.ll.aaaa`.")
     elif linie[1] != user:
-        r.lipsa(f"în linia din README, numele de utilizator este „{linie[1]}”; contul tău este „{user}”.")
+        r.lipsa(f"în linia din README, numele de utilizator este „{linie[1]}”; contul dumneavoastră este „{user}”.")
     elif linie[0] not in variante_permise(user):
-        r.lipsa(f"varianta {linie[0]} nu este a ta; pentru {user}: {permise} (tabelul din README).")
+        r.lipsa(f"varianta {linie[0]} nu este a dumneavoastră; pentru {user}: {permise} (tabelul din README).")
     else:
         r.da(1, f"linia din README: varianta {linie[0]}, data {linie[2]}.")
     return r
@@ -211,14 +211,14 @@ def test_pr() -> Rezultat:
         r.lipsa("nu pot interoga pull request-urile aici (verificarea rulează în Actions, cu GH_TOKEN).")
         return r
     if not pruri:
-        r.lipsa(f"nu există un pull request din `colocviu/{user}` spre `main`; deschide-l, apoi verificarea rulează din nou.")
+        r.lipsa(f"nu există un pull request din `colocviu/{user}` spre `main`; deschideți-l, apoi verificarea rulează din nou.")
         return r
     pr = pruri[0]
     r.da(1, f"pull request #{pr.get('number')} („{pr.get('title', '')}”).")
     if len((pr.get("body") or "").split()) >= 3:
         r.da(1, "pull request-ul are descriere.")
     else:
-        r.lipsa("pull request-ul nu are descriere (cel puțin o propoziție); o adaugi cu *Edit*, pe pagina lui.")
+        r.lipsa("pull request-ul nu are descriere (cel puțin o propoziție); o adăugați cu *Edit*, pe pagina lui.")
     return r
 
 
@@ -264,7 +264,7 @@ def test_latex() -> Rezultat:
     user = utilizator()
     varianta = varianta_declarata(user)
     if not varianta:
-        r.lipsa("completează întâi linia din README (sarcina 1): de acolo se citește varianta.")
+        r.lipsa("completați întâi linia din README (sarcina 1): de acolo se citește varianta.")
         return r
     tex, pdf = Path("report/colocviu.tex"), Path("report/colocviu.pdf")
     sursa = tex.read_text(encoding="utf-8", errors="replace") if tex.is_file() else ""
@@ -273,20 +273,20 @@ def test_latex() -> Rezultat:
     if not sect:
         r.lipsa(f"în `report/colocviu.tex` lipsește `\\section{{{user}}}`.")
     elif "\\begin{equation" not in sect:
-        r.lipsa("secțiunea ta nu are formula într-un mediu `equation`.")
+        r.lipsa("secțiunea dumneavoastră nu are formula într-un mediu `equation`.")
     elif not all(normalizeaza_latex(e) in compact for e in FORMULE[varianta]):
-        r.lipsa(f"formula din secțiunea ta nu este cea a variantei {varianta} (tabelul din README).")
+        r.lipsa(f"formula din secțiunea dumneavoastră nu este cea a variantei {varianta} (tabelul din README).")
     else:
         r.da(1, f"sursa: secțiunea `{user}`, cu formula variantei {varianta}.")
     if not pdf.is_file() or pdf.stat().st_size < 5 * 1024:
-        r.lipsa("`report/colocviu.pdf` lipsește sau e gol; descarcă PDF-ul din Overleaf și adaugă-l pe ramura ta.")
+        r.lipsa("`report/colocviu.pdf` lipsește sau e gol; descărcați PDF-ul din Overleaf și adăugați-l pe ramura dumneavoastră.")
         return r
     text = text_pdf(pdf)
     n = calculeaza_n(user, varianta)
     if not text:
         r.lipsa("nu pot citi textul PDF-ului (pdftotext lipsește sau PDF-ul nu este valid).")
     elif text.lower().count(user) < 2:
-        r.lipsa(f"în PDF, numele de utilizator „{user}” apare de mai puțin de două ori (titlul secțiunii și rândul din tabel); recompilează și descarcă PDF-ul nou.")
+        r.lipsa(f"în PDF, numele de utilizator „{user}” apare de mai puțin de două ori (titlul secțiunii și rândul din tabel); recompilați și descărcați PDF-ul nou.")
     elif str(n) not in text:
         r.lipsa(f"în PDF nu apare valoarea N corectă pentru {user}, varianta {varianta} (rândul din tabel).")
     else:
@@ -311,13 +311,13 @@ def test_notebook() -> Rezultat:
             iesiri.append("".join(o.get("data", {}).get("text/plain", "")))
     m = re.search(r"REZULTAT:\s*N=(\d+)", "\n".join(iesiri))
     if not m:
-        r.lipsa("notebook-ul nu are rezultatele salvate (`REZULTAT: N=...`); *Run all*, apoi *Save a copy in GitHub* pe ramura ta.")
+        r.lipsa("notebook-ul nu are rezultatele salvate (`REZULTAT: N=...`); *Run all*, apoi *Save a copy in GitHub* pe ramura dumneavoastră.")
         return r
     r.da(1, "notebook-ul este salvat cu rezultate.")
     if not varianta:
-        r.lipsa("completează linia din README (sarcina 1): de acolo se citește varianta.")
+        r.lipsa("completați linia din README (sarcina 1): de acolo se citește varianta.")
     elif int(m.group(1)) != calculeaza_n(user, varianta):
-        r.lipsa(f"N={m.group(1)} nu corespunde utilizatorului {user} și variantei {varianta}; verifică `USER` și `VARIANTA` din prima celulă.")
+        r.lipsa(f"N={m.group(1)} nu corespunde utilizatorului {user} și variantei {varianta}; verificați `USER` și `VARIANTA` din prima celulă.")
     else:
         r.da(1, f"N={m.group(1)}, corect pentru {user}, varianta {varianta}.")
     return r
